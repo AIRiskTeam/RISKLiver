@@ -43,14 +43,15 @@ class BaseEstimator():
 
         # Load models
         self.model_list = []
+        model_path = "model" if os.path.exists(self.join("model")) else "models"
         for idx in range(self.run_num):
             if self.model == "xgb":
                 # XGBoost
-                path = self.join("model", f"{self.date}_{idx}.xgb_fit")
+                path = self.join(model_path, f"{self.date}_{idx}.xgb_fit")
                 self.model_list.append(path)
             elif self.model == "tabpfn":
                 # TabPFN
-                path = self.join("model", f"{self.date}_{idx}.tabpfn_fit")
+                path = self.join(model_path, f"{self.date}_{idx}.tabpfn_fit")
                 self.model_list.append(path)
             else:
                 raise ValueError("unknown model")

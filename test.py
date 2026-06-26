@@ -1,0 +1,102 @@
+import json, asyncio, sys
+
+async def main():
+    p = await asyncio.subprocess.create_subprocess_shell("nvidia-smi", stdout=asyncio.subprocess.PIPE)
+    # await p.communicate()
+    return_code = await p.wait()
+    # p = subprocess.run(['nvidia-smi'], stdout=subprocess.PIPE)
+    nvidia_output = (await p.stdout.read()).decode(encoding='utf-8')
+    print(nvidia_output)
+
+info = json.load(sys.stdin)
+asyncio.run(main())
+json.dump(info, sys.stdout)
+quit()
+cat_keys_a = ['active', 'inactive']
+cat_dict_a = {i:idx for idx, i in enumerate(cat_keys_a)}
+
+
+estimators = {
+    'Hazard_viability':dict( 
+        date='5b6d43d6-2695-11f1-80cd-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='classifier',
+        cat_dict=cat_dict_a,
+        cat_keys=cat_keys_a,
+        run_num=25,
+        features=['rd_MaxAbsEStateIndex', 'rd_MinAbsEStateIndex', 'rd_SPS', 'rd_MolWt', 'rd_NumValenceElectrons', 'rd_MinPartialCharge', 'rd_MaxAbsPartialCharge', 'rd_FpDensityMorgan1', 'rd_FpDensityMorgan2', 'rd_FpDensityMorgan3', 'rd_BCUT2D_MWHI', 'rd_BCUT2D_MWLOW', 'rd_BCUT2D_CHGHI', 'rd_BCUT2D_CHGLO', 'rd_BCUT2D_LOGPHI', 'rd_BCUT2D_LOGPLOW', 'rd_BCUT2D_MRHI', 'rd_AvgIpc', 'rd_BalabanJ', 'rd_BertzCT', 'rd_Chi1v', 'rd_Chi2n', 'rd_Chi3v', 'rd_Chi4n', 'rd_HallKierAlpha', 'rd_Ipc', 'rd_Kappa2', 'rd_Kappa3', 'rd_PEOE_VSA1', 'rd_PEOE_VSA10', 'rd_PEOE_VSA11', 'rd_PEOE_VSA3', 'rd_PEOE_VSA6', 'rd_PEOE_VSA7', 'rd_PEOE_VSA8', 'rd_PEOE_VSA9', 'rd_SMR_VSA1', 'rd_SMR_VSA10', 'rd_SMR_VSA3', 'rd_SMR_VSA5', 'rd_SMR_VSA6', 'rd_SMR_VSA7', 'rd_SMR_VSA9', 'rd_SlogP_VSA1', 'rd_SlogP_VSA10', 'rd_SlogP_VSA11', 'rd_SlogP_VSA12', 'rd_SlogP_VSA2', 'rd_SlogP_VSA3', 'rd_SlogP_VSA4', 'rd_SlogP_VSA5', 'rd_SlogP_VSA7', 'rd_SlogP_VSA8', 'rd_EState_VSA10', 'rd_EState_VSA2', 'rd_EState_VSA3', 'rd_EState_VSA4', 'rd_EState_VSA5', 'rd_EState_VSA6', 'rd_EState_VSA7', 'rd_EState_VSA8', 'rd_VSA_EState1', 'rd_VSA_EState10', 'rd_VSA_EState3', 'rd_VSA_EState4', 'rd_VSA_EState5', 'rd_VSA_EState6', 'rd_VSA_EState7', 'rd_VSA_EState8', 'rd_VSA_EState9', 'rd_FractionCSP3', 'rd_NOCount', 'rd_NumAliphaticCarbocycles', 'rd_NumAliphaticHeterocycles', 'rd_NumAliphaticRings', 'rd_NumAromaticCarbocycles', 'rd_NumAromaticHeterocycles', 'rd_NumAromaticRings', 'rd_NumAtomStereoCenters', 'rd_NumHAcceptors', 'rd_NumHeteroatoms', 'rd_NumHeterocycles', 'rd_NumRotatableBonds', 'rd_NumSaturatedHeterocycles', 'rd_NumSaturatedRings', 'rd_NumSpiroAtoms', 'rd_RingCount', 'rd_MolLogP', 'rd_fr_Al_COO', 'rd_fr_Ar_N', 'rd_fr_Ar_OH', 'rd_fr_COO', 'rd_fr_NH0', 'rd_fr_NH2', 'rd_fr_Ndealkylation2', 'rd_fr_alkyl_halide', 'rd_fr_allylic_oxid', 'rd_fr_aniline', 'rd_fr_aryl_methyl', 'rd_fr_azo', 'rd_fr_bicyclic', 'rd_fr_dihydropyridine', 'rd_fr_halogen', 'rd_fr_imidazole', 'rd_fr_para_hydroxylation', 'rd_fr_piperdine', 'rd_fr_piperzine']
+    ),
+    'IC20_free_viability':    dict( 
+        date='1e7cd41c-2458-11f1-8521-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='classifier',
+        cat_dict=cat_dict_a,
+        cat_keys=cat_keys_a,
+        run_num=15,
+        features=["rd_MaxAbsEStateIndex", "rd_MinAbsEStateIndex", "rd_qed", "rd_MolWt", "rd_MinPartialCharge", "rd_MaxAbsPartialCharge", "rd_FpDensityMorgan1", "rd_FpDensityMorgan2", "rd_FpDensityMorgan3", "rd_BCUT2D_MWHI", "rd_BCUT2D_MWLOW", "rd_BCUT2D_CHGHI", "rd_BCUT2D_CHGLO", "rd_BCUT2D_LOGPHI", "rd_BCUT2D_MRHI", "rd_AvgIpc", "rd_BalabanJ", "rd_BertzCT", "rd_Chi0n", "rd_Chi2v", "rd_Chi3n", "rd_Chi4v", "rd_HallKierAlpha", "rd_Ipc", "rd_Kappa2", "rd_PEOE_VSA10", "rd_PEOE_VSA11", "rd_PEOE_VSA6", "rd_PEOE_VSA7", "rd_PEOE_VSA8", "rd_PEOE_VSA9", "rd_SMR_VSA10", "rd_SMR_VSA3", "rd_SMR_VSA6", "rd_SMR_VSA7", "rd_SMR_VSA9", "rd_SlogP_VSA1", "rd_SlogP_VSA10", "rd_SlogP_VSA11", "rd_SlogP_VSA12", "rd_SlogP_VSA2", "rd_SlogP_VSA4", "rd_SlogP_VSA5", "rd_SlogP_VSA7", "rd_SlogP_VSA8", "rd_EState_VSA10", "rd_EState_VSA2", "rd_EState_VSA3", "rd_EState_VSA4", "rd_EState_VSA5", "rd_EState_VSA6", "rd_EState_VSA7", "rd_VSA_EState10", "rd_VSA_EState3", "rd_VSA_EState4", "rd_VSA_EState5", "rd_VSA_EState6", "rd_FractionCSP3", "rd_NumAliphaticCarbocycles", "rd_NumAliphaticHeterocycles", "rd_NumAromaticCarbocycles", "rd_NumAromaticHeterocycles", "rd_NumAromaticRings", "rd_NumAtomStereoCenters", "rd_NumHAcceptors", "rd_NumHeteroatoms", "rd_NumSaturatedCarbocycles", "rd_NumSaturatedHeterocycles", "rd_NumSaturatedRings", "rd_RingCount", "rd_MolLogP", "rd_fr_Al_COO", "rd_fr_Al_OH", "rd_fr_Ar_OH", "rd_fr_COO", "rd_fr_C_O", "rd_fr_Ndealkylation1", "rd_fr_Ndealkylation2", "rd_fr_aniline", "rd_fr_aryl_methyl", "rd_fr_bicyclic", "rd_fr_dihydropyridine", "rd_fr_halogen", "rd_fr_lactam", "rd_fr_nitro", "rd_fr_nitro_arom", "rd_fr_nitro_arom_nonortho", "rd_fr_para_hydroxylation", "rd_fr_piperdine", "rd_fr_thiazole"],
+    ),
+    'IC20_cell_viability':dict( 
+        date='e7a86ad6-2458-11f1-8521-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='classifier',
+        cat_dict=cat_dict_a,
+        cat_keys=cat_keys_a,
+        run_num=75,
+        features=["rd_SPS", "rd_MolWt", "rd_NumValenceElectrons", "rd_MaxPartialCharge", "rd_MinAbsPartialCharge", "rd_FpDensityMorgan1", "rd_FpDensityMorgan2", "rd_FpDensityMorgan3", "rd_BCUT2D_MWLOW", "rd_BCUT2D_CHGHI", "rd_BCUT2D_CHGLO", "rd_BCUT2D_LOGPHI", "rd_BCUT2D_LOGPLOW", "rd_AvgIpc", "rd_BalabanJ", "rd_BertzCT", "rd_Chi1v", "rd_Chi2n", "rd_Chi3v", "rd_Chi4n", "rd_HallKierAlpha", "rd_Ipc", "rd_Kappa2", "rd_Kappa3", "rd_PEOE_VSA1", "rd_PEOE_VSA10", "rd_PEOE_VSA6", "rd_PEOE_VSA7", "rd_PEOE_VSA8", "rd_PEOE_VSA9", "rd_SMR_VSA10", "rd_SMR_VSA3", "rd_SMR_VSA5", "rd_SMR_VSA6", "rd_SMR_VSA7", "rd_SMR_VSA9", "rd_SlogP_VSA11", "rd_SlogP_VSA2", "rd_SlogP_VSA5", "rd_SlogP_VSA7", "rd_SlogP_VSA8", "rd_EState_VSA4", "rd_EState_VSA5", "rd_EState_VSA7", "rd_EState_VSA8", "rd_VSA_EState3", "rd_VSA_EState4", "rd_VSA_EState6", "rd_VSA_EState7", "rd_VSA_EState8", "rd_VSA_EState9", "rd_NumAliphaticCarbocycles", "rd_NumAliphaticHeterocycles", "rd_NumAliphaticRings", "rd_NumAromaticCarbocycles", "rd_NumAromaticRings", "rd_NumHeterocycles", "rd_NumRotatableBonds", "rd_NumSaturatedHeterocycles", "rd_NumSaturatedRings", "rd_RingCount", "rd_MolLogP", "rd_fr_Ar_OH", "rd_fr_NH0", "rd_fr_Ndealkylation2", "rd_fr_bicyclic", "rd_fr_piperdine", "rd_fr_piperzine", "rd_fr_unbrch_alkane"]
+    ),
+    'Hazard_mitotox':dict( 
+        date='2c71181e-2776-11f1-9087-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='regressor',
+        run_num=5,
+        features=['rd_MaxAbsEStateIndex', 'rd_qed', 'rd_SPS', 'rd_MolWt', 'rd_NumValenceElectrons', 'rd_MaxPartialCharge', 'rd_MinAbsPartialCharge', 'rd_FpDensityMorgan1', 'rd_FpDensityMorgan2', 'rd_BCUT2D_MWHI', 'rd_BCUT2D_MWLOW', 'rd_BCUT2D_CHGHI', 'rd_BCUT2D_LOGPLOW', 'rd_BCUT2D_MRHI', 'rd_AvgIpc', 'rd_BalabanJ', 'rd_BertzCT', 'rd_Chi1v', 'rd_Chi2n', 'rd_Chi2v', 'rd_Chi3v', 'rd_Chi4n', 'rd_Ipc', 'rd_Kappa2', 'rd_Kappa3', 'rd_PEOE_VSA11', 'rd_PEOE_VSA12', 'rd_PEOE_VSA13', 'rd_PEOE_VSA14', 'rd_PEOE_VSA2', 'rd_PEOE_VSA3', 'rd_PEOE_VSA4', 'rd_PEOE_VSA6', 'rd_PEOE_VSA7', 'rd_PEOE_VSA8', 'rd_SMR_VSA10', 'rd_SMR_VSA2', 'rd_SMR_VSA3', 'rd_SMR_VSA4', 'rd_SMR_VSA5', 'rd_SMR_VSA6', 'rd_SMR_VSA7', 'rd_SlogP_VSA1', 'rd_SlogP_VSA10', 'rd_SlogP_VSA12', 'rd_SlogP_VSA2', 'rd_SlogP_VSA5', 'rd_SlogP_VSA6', 'rd_SlogP_VSA7', 'rd_TPSA', 'rd_EState_VSA10', 'rd_EState_VSA4', 'rd_EState_VSA5', 'rd_EState_VSA7', 'rd_EState_VSA8', 'rd_VSA_EState10', 'rd_VSA_EState4', 'rd_VSA_EState6', 'rd_VSA_EState7', 'rd_VSA_EState8', 'rd_FractionCSP3', 'rd_NHOHCount', 'rd_NumAliphaticHeterocycles', 'rd_NumAliphaticRings', 'rd_NumAmideBonds', 'rd_NumAromaticCarbocycles', 'rd_NumAromaticRings', 'rd_NumAtomStereoCenters', 'rd_NumBridgeheadAtoms', 'rd_NumHAcceptors', 'rd_NumRotatableBonds', 'rd_NumSaturatedHeterocycles', 'rd_NumSaturatedRings', 'rd_NumUnspecifiedAtomStereoCenters', 'rd_RingCount', 'rd_MolLogP', 'rd_fr_Al_COO', 'rd_fr_ArN', 'rd_fr_Ar_NH', 'rd_fr_NH2', 'rd_fr_Ndealkylation1', 'rd_fr_Ndealkylation2', 'rd_fr_amidine', 'rd_fr_azo', 'rd_fr_halogen', 'rd_fr_imidazole', 'rd_fr_ketone', 'rd_fr_ketone_Topliss', 'rd_fr_methoxy', 'rd_fr_nitrile', 'rd_fr_nitro', 'rd_fr_para_hydroxylation', 'rd_fr_piperdine', 'rd_fr_piperzine', 'rd_fr_sulfide', 'rd_fr_thiazole', 'rd_fr_unbrch_alkane', 'rd_fr_urea']
+    ),
+    'IC20_free_mitotox':dict( 
+        date='6263e416-277a-11f1-9087-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='regressor',
+        run_num=5,
+        features=['rd_MaxAbsEStateIndex', 'rd_MinAbsEStateIndex', 'rd_qed', 'rd_SPS', 'rd_MolWt', 'rd_NumValenceElectrons', 'rd_MinPartialCharge', 'rd_MaxAbsPartialCharge', 'rd_FpDensityMorgan3', 'rd_BCUT2D_MWHI', 'rd_BCUT2D_MWLOW', 'rd_BCUT2D_CHGHI', 'rd_BCUT2D_MRHI', 'rd_BCUT2D_MRLOW', 'rd_AvgIpc', 'rd_BalabanJ', 'rd_BertzCT', 'rd_Chi1v', 'rd_Chi2n', 'rd_Chi2v', 'rd_Chi3v', 'rd_Chi4n', 'rd_HallKierAlpha', 'rd_Ipc', 'rd_Kappa2', 'rd_PEOE_VSA11', 'rd_PEOE_VSA13', 'rd_PEOE_VSA5', 'rd_PEOE_VSA6', 'rd_PEOE_VSA7', 'rd_PEOE_VSA9', 'rd_SMR_VSA10', 'rd_SMR_VSA2', 'rd_SMR_VSA5', 'rd_SMR_VSA6', 'rd_SMR_VSA7', 'rd_SMR_VSA9', 'rd_SlogP_VSA1', 'rd_SlogP_VSA11', 'rd_SlogP_VSA12', 'rd_SlogP_VSA2', 'rd_SlogP_VSA4', 'rd_SlogP_VSA5', 'rd_SlogP_VSA6', 'rd_SlogP_VSA7', 'rd_TPSA', 'rd_EState_VSA1', 'rd_EState_VSA3', 'rd_EState_VSA4', 'rd_EState_VSA6', 'rd_EState_VSA7', 'rd_EState_VSA8', 'rd_VSA_EState10', 'rd_VSA_EState4', 'rd_VSA_EState5', 'rd_VSA_EState6', 'rd_VSA_EState7', 'rd_VSA_EState8', 'rd_VSA_EState9', 'rd_NHOHCount', 'rd_NumAliphaticCarbocycles', 'rd_NumAliphaticHeterocycles', 'rd_NumAromaticCarbocycles', 'rd_NumAromaticRings', 'rd_NumAtomStereoCenters', 'rd_NumBridgeheadAtoms', 'rd_NumHAcceptors', 'rd_NumHeteroatoms', 'rd_NumHeterocycles', 'rd_NumSaturatedCarbocycles', 'rd_NumSaturatedRings', 'rd_NumUnspecifiedAtomStereoCenters', 'rd_RingCount', 'rd_MolLogP', 'rd_fr_Al_OH', 'rd_fr_ArN', 'rd_fr_Ar_OH', 'rd_fr_C_S', 'rd_fr_NH0', 'rd_fr_NH1', 'rd_fr_NH2', 'rd_fr_SH', 'rd_fr_alkyl_halide', 'rd_fr_allylic_oxid', 'rd_fr_aryl_methyl', 'rd_fr_azo', 'rd_fr_guanido', 'rd_fr_halogen', 'rd_fr_imide', 'rd_fr_lactone', 'rd_fr_nitro', 'rd_fr_para_hydroxylation', 'rd_fr_quatN', 'rd_fr_term_acetylene', 'rd_fr_thiocyan', 'rd_fr_unbrch_alkane']
+    ),
+    'IC20_cell_mitotox':dict( 
+        date='eff9653e-277b-11f1-9087-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='regressor',
+        run_num=5,
+        features=['rd_MaxAbsEStateIndex', 'rd_MinEStateIndex', 'rd_qed', 'rd_SPS', 'rd_MolWt', 'rd_NumValenceElectrons', 'rd_FpDensityMorgan1', 'rd_FpDensityMorgan2', 'rd_BCUT2D_MWHI', 'rd_BCUT2D_MWLOW', 'rd_BCUT2D_CHGHI', 'rd_BCUT2D_CHGLO', 'rd_BCUT2D_LOGPHI', 'rd_BCUT2D_MRHI', 'rd_AvgIpc', 'rd_BalabanJ', 'rd_BertzCT', 'rd_Chi1v', 'rd_Chi2n', 'rd_Chi3v', 'rd_Chi4n', 'rd_HallKierAlpha', 'rd_Ipc', 'rd_Kappa2', 'rd_Kappa3', 'rd_PEOE_VSA1', 'rd_PEOE_VSA10', 'rd_PEOE_VSA12', 'rd_PEOE_VSA13', 'rd_PEOE_VSA14', 'rd_PEOE_VSA2', 'rd_PEOE_VSA3', 'rd_PEOE_VSA6', 'rd_PEOE_VSA7', 'rd_SMR_VSA10', 'rd_SMR_VSA3', 'rd_SMR_VSA4', 'rd_SMR_VSA5', 'rd_SMR_VSA6', 'rd_SMR_VSA7', 'rd_SMR_VSA9', 'rd_SlogP_VSA1', 'rd_SlogP_VSA10', 'rd_SlogP_VSA11', 'rd_SlogP_VSA12', 'rd_SlogP_VSA2', 'rd_SlogP_VSA3', 'rd_SlogP_VSA4', 'rd_SlogP_VSA5', 'rd_SlogP_VSA6', 'rd_SlogP_VSA7', 'rd_TPSA', 'rd_EState_VSA3', 'rd_EState_VSA4', 'rd_EState_VSA5', 'rd_EState_VSA7', 'rd_EState_VSA8', 'rd_VSA_EState10', 'rd_VSA_EState2', 'rd_VSA_EState5', 'rd_VSA_EState6', 'rd_VSA_EState7', 'rd_VSA_EState8', 'rd_FractionCSP3', 'rd_NHOHCount', 'rd_NumAliphaticCarbocycles', 'rd_NumAliphaticRings', 'rd_NumAromaticCarbocycles', 'rd_NumAromaticHeterocycles', 'rd_NumAromaticRings', 'rd_NumAtomStereoCenters', 'rd_NumBridgeheadAtoms', 'rd_NumHAcceptors', 'rd_NumHeterocycles', 'rd_NumRotatableBonds', 'rd_NumSaturatedCarbocycles', 'rd_NumSaturatedRings', 'rd_NumSpiroAtoms', 'rd_RingCount', 'rd_MolLogP', 'rd_fr_ArN', 'rd_fr_Ar_N', 'rd_fr_Ar_NH', 'rd_fr_C_S', 'rd_fr_NH0', 'rd_fr_NH1', 'rd_fr_NH2', 'rd_fr_SH', 'rd_fr_aldehyde', 'rd_fr_alkyl_halide', 'rd_fr_allylic_oxid', 'rd_fr_aniline', 'rd_fr_bicyclic', 'rd_fr_ester', 'rd_fr_ether', 'rd_fr_guanido', 'rd_fr_halogen', 'rd_fr_imidazole', 'rd_fr_nitro', 'rd_fr_nitro_arom_nonortho', 'rd_fr_phenol', 'rd_fr_priamide', 'rd_fr_quatN', 'rd_fr_sulfonamd', 'rd_fr_thiocyan']
+    ),
+    'Hazard_apoptosis':dict( 
+        date='53a80028-277b-11f1-9087-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='regressor',
+        run_num=5,
+        features=['rd_MinAbsEStateIndex', 'rd_qed', 'rd_SPS', 'rd_MolWt', 'rd_NumValenceElectrons', 'rd_MinPartialCharge', 'rd_BCUT2D_MWHI', 'rd_BCUT2D_MWLOW', 'rd_BCUT2D_CHGHI', 'rd_BCUT2D_CHGLO', 'rd_BCUT2D_LOGPHI', 'rd_BCUT2D_MRLOW', 'rd_AvgIpc', 'rd_BalabanJ', 'rd_Chi1v', 'rd_Chi2n', 'rd_Chi3v', 'rd_Chi4n', 'rd_HallKierAlpha', 'rd_Ipc', 'rd_Kappa2', 'rd_Kappa3', 'rd_PEOE_VSA1', 'rd_PEOE_VSA10', 'rd_PEOE_VSA11', 'rd_PEOE_VSA12', 'rd_PEOE_VSA13', 'rd_PEOE_VSA2', 'rd_PEOE_VSA6', 'rd_PEOE_VSA7', 'rd_PEOE_VSA9', 'rd_SMR_VSA1', 'rd_SMR_VSA10', 'rd_SMR_VSA5', 'rd_SMR_VSA7', 'rd_SlogP_VSA1', 'rd_SlogP_VSA10', 'rd_SlogP_VSA11', 'rd_SlogP_VSA12', 'rd_SlogP_VSA2', 'rd_SlogP_VSA3', 'rd_SlogP_VSA4', 'rd_SlogP_VSA5', 'rd_SlogP_VSA6', 'rd_TPSA', 'rd_EState_VSA1', 'rd_EState_VSA10', 'rd_EState_VSA2', 'rd_EState_VSA3', 'rd_EState_VSA4', 'rd_EState_VSA7', 'rd_EState_VSA8', 'rd_VSA_EState10', 'rd_VSA_EState2', 'rd_VSA_EState3', 'rd_VSA_EState5', 'rd_VSA_EState6', 'rd_VSA_EState7', 'rd_VSA_EState8', 'rd_FractionCSP3', 'rd_NHOHCount', 'rd_NumAliphaticHeterocycles', 'rd_NumAmideBonds', 'rd_NumAromaticHeterocycles', 'rd_NumAtomStereoCenters', 'rd_NumHAcceptors', 'rd_NumHeteroatoms', 'rd_NumHeterocycles', 'rd_NumRotatableBonds', 'rd_NumSaturatedCarbocycles', 'rd_NumSaturatedHeterocycles', 'rd_NumSaturatedRings', 'rd_NumUnspecifiedAtomStereoCenters', 'rd_MolLogP', 'rd_fr_Al_OH_noTert', 'rd_fr_ArN', 'rd_fr_Ar_N', 'rd_fr_Ar_OH', 'rd_fr_NH0', 'rd_fr_NH1', 'rd_fr_NH2', 'rd_fr_Ndealkylation2', 'rd_fr_alkyl_halide', 'rd_fr_allylic_oxid', 'rd_fr_aniline', 'rd_fr_bicyclic', 'rd_fr_ester', 'rd_fr_ether', 'rd_fr_guanido', 'rd_fr_halogen', 'rd_fr_hdrzone', 'rd_fr_ketone', 'rd_fr_lactone', 'rd_fr_nitro', 'rd_fr_nitro_arom_nonortho', 'rd_fr_para_hydroxylation', 'rd_fr_sulfide', 'rd_fr_thiazole']
+    ),
+    'IC20_free_apoptosis':dict( 
+        date='108f5a82-277d-11f1-9087-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='regressor',
+        run_num=5,
+        features=['rd_MaxAbsEStateIndex', 'rd_MinAbsEStateIndex', 'rd_MinEStateIndex', 'rd_qed', 'rd_SPS', 'rd_MolWt', 'rd_MaxPartialCharge', 'rd_MinPartialCharge', 'rd_FpDensityMorgan1', 'rd_FpDensityMorgan2', 'rd_BCUT2D_MWHI', 'rd_BCUT2D_MWLOW', 'rd_BCUT2D_CHGHI', 'rd_BCUT2D_MRHI', 'rd_BCUT2D_MRLOW', 'rd_AvgIpc', 'rd_BalabanJ', 'rd_BertzCT', 'rd_Chi0n', 'rd_Chi1v', 'rd_Chi2v', 'rd_Chi3n', 'rd_Chi3v', 'rd_Chi4v', 'rd_HallKierAlpha', 'rd_Ipc', 'rd_Kappa2', 'rd_Kappa3', 'rd_PEOE_VSA12', 'rd_PEOE_VSA14', 'rd_PEOE_VSA3', 'rd_PEOE_VSA6', 'rd_PEOE_VSA7', 'rd_PEOE_VSA8', 'rd_PEOE_VSA9', 'rd_SMR_VSA1', 'rd_SMR_VSA10', 'rd_SMR_VSA2', 'rd_SMR_VSA5', 'rd_SMR_VSA7', 'rd_SMR_VSA9', 'rd_SlogP_VSA1', 'rd_SlogP_VSA11', 'rd_SlogP_VSA2', 'rd_SlogP_VSA4', 'rd_SlogP_VSA5', 'rd_SlogP_VSA6', 'rd_SlogP_VSA8', 'rd_TPSA', 'rd_EState_VSA1', 'rd_EState_VSA10', 'rd_EState_VSA11', 'rd_EState_VSA2', 'rd_EState_VSA3', 'rd_EState_VSA4', 'rd_EState_VSA5', 'rd_EState_VSA6', 'rd_EState_VSA7', 'rd_EState_VSA8', 'rd_EState_VSA9', 'rd_VSA_EState3', 'rd_VSA_EState4', 'rd_VSA_EState6', 'rd_VSA_EState7', 'rd_VSA_EState8', 'rd_VSA_EState9', 'rd_NOCount', 'rd_NumAliphaticCarbocycles', 'rd_NumAliphaticHeterocycles', 'rd_NumAliphaticRings', 'rd_NumAromaticCarbocycles', 'rd_NumAromaticRings', 'rd_NumAtomStereoCenters', 'rd_NumBridgeheadAtoms', 'rd_NumRotatableBonds', 'rd_NumSaturatedCarbocycles', 'rd_NumSaturatedHeterocycles', 'rd_NumSaturatedRings', 'rd_NumSpiroAtoms', 'rd_RingCount', 'rd_MolLogP', 'rd_fr_ArN', 'rd_fr_Ar_N', 'rd_fr_Ar_OH', 'rd_fr_C_O', 'rd_fr_C_S', 'rd_fr_Imine', 'rd_fr_NH0', 'rd_fr_NH1', 'rd_fr_NH2', 'rd_fr_N_O', 'rd_fr_Ndealkylation1', 'rd_fr_Ndealkylation2', 'rd_fr_SH', 'rd_fr_alkyl_carbamate', 'rd_fr_allylic_oxid', 'rd_fr_amidine', 'rd_fr_aryl_methyl', 'rd_fr_azo', 'rd_fr_bicyclic', 'rd_fr_epoxide', 'rd_fr_halogen', 'rd_fr_hdrzone', 'rd_fr_imidazole', 'rd_fr_nitrile', 'rd_fr_nitro', 'rd_fr_nitro_arom', 'rd_fr_nitro_arom_nonortho', 'rd_fr_oxime', 'rd_fr_para_hydroxylation', 'rd_fr_piperdine', 'rd_fr_quatN', 'rd_fr_thiocyan']
+    ),
+    'IC20_cell_apoptosis':dict( 
+        date='7c617e02-277d-11f1-9087-60cf848a7bd6',
+        
+        model='tabpfn',
+        model_type='regressor',
+        run_num=5,
+        features=['rd_MinAbsEStateIndex', 'rd_MinEStateIndex', 'rd_qed', 'rd_SPS', 'rd_MaxPartialCharge', 'rd_MinPartialCharge', 'rd_FpDensityMorgan3', 'rd_BCUT2D_MWHI', 'rd_BCUT2D_MWLOW', 'rd_BCUT2D_CHGHI', 'rd_BCUT2D_MRHI', 'rd_BCUT2D_MRLOW', 'rd_BalabanJ', 'rd_Chi0n', 'rd_Chi2v', 'rd_Chi3n', 'rd_Chi4v', 'rd_HallKierAlpha', 'rd_PEOE_VSA1', 'rd_PEOE_VSA11', 'rd_PEOE_VSA12', 'rd_PEOE_VSA13', 'rd_PEOE_VSA14', 'rd_PEOE_VSA2', 'rd_PEOE_VSA3', 'rd_PEOE_VSA4', 'rd_PEOE_VSA5', 'rd_PEOE_VSA6', 'rd_PEOE_VSA7', 'rd_PEOE_VSA8', 'rd_PEOE_VSA9', 'rd_SMR_VSA1', 'rd_SMR_VSA10', 'rd_SMR_VSA2', 'rd_SMR_VSA3', 'rd_SMR_VSA5', 'rd_SMR_VSA6', 'rd_SMR_VSA7', 'rd_SMR_VSA9', 'rd_SlogP_VSA1', 'rd_SlogP_VSA10', 'rd_SlogP_VSA11', 'rd_SlogP_VSA12', 'rd_SlogP_VSA2', 'rd_SlogP_VSA4', 'rd_SlogP_VSA5', 'rd_SlogP_VSA6', 'rd_SlogP_VSA7', 'rd_TPSA', 'rd_EState_VSA1', 'rd_EState_VSA10', 'rd_EState_VSA11', 'rd_EState_VSA2', 'rd_EState_VSA3', 'rd_EState_VSA4', 'rd_EState_VSA5', 'rd_EState_VSA7', 'rd_EState_VSA8', 'rd_EState_VSA9', 'rd_VSA_EState1', 'rd_VSA_EState10', 'rd_VSA_EState2', 'rd_VSA_EState4', 'rd_VSA_EState5', 'rd_VSA_EState6', 'rd_VSA_EState7', 'rd_VSA_EState8', 'rd_VSA_EState9', 'rd_FractionCSP3', 'rd_NHOHCount', 'rd_NOCount', 'rd_NumAliphaticHeterocycles', 'rd_NumAmideBonds', 'rd_NumAromaticCarbocycles', 'rd_NumAromaticHeterocycles', 'rd_NumAromaticRings', 'rd_NumBridgeheadAtoms', 'rd_NumHeteroatoms', 'rd_NumHeterocycles', 'rd_NumSaturatedCarbocycles', 'rd_NumSaturatedHeterocycles', 'rd_NumUnspecifiedAtomStereoCenters', 'rd_RingCount', 'rd_MolLogP', 'rd_fr_Al_OH', 'rd_fr_Al_OH_noTert', 'rd_fr_ArN', 'rd_fr_Ar_N', 'rd_fr_Ar_NH', 'rd_fr_Ar_OH', 'rd_fr_C_O', 'rd_fr_C_S', 'rd_fr_HOCCN', 'rd_fr_NH0', 'rd_fr_NH1', 'rd_fr_NH2', 'rd_fr_N_O', 'rd_fr_Ndealkylation1', 'rd_fr_Ndealkylation2', 'rd_fr_SH', 'rd_fr_aldehyde', 'rd_fr_allylic_oxid', 'rd_fr_amidine', 'rd_fr_aniline', 'rd_fr_aryl_methyl', 'rd_fr_azo', 'rd_fr_bicyclic', 'rd_fr_epoxide', 'rd_fr_ether', 'rd_fr_guanido', 'rd_fr_halogen', 'rd_fr_hdrzone', 'rd_fr_ketone_Topliss', 'rd_fr_lactone', 'rd_fr_methoxy', 'rd_fr_nitrile', 'rd_fr_nitro', 'rd_fr_oxazole', 'rd_fr_para_hydroxylation', 'rd_fr_phos_acid', 'rd_fr_pyridine', 'rd_fr_quatN', 'rd_fr_sulfone', 'rd_fr_term_acetylene', 'rd_fr_thiazole', 'rd_fr_thiophene', 'rd_fr_unbrch_alkane']
+    ),
+
+}
+
+with open("config.json", 'w', encoding='utf-8') as f:
+    json.dump(estimators, f)
