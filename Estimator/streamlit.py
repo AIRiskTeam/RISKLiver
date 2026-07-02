@@ -6,15 +6,15 @@ from .ivd import calculate_ivd
 
 import pandas as pd
 import numpy as np
-import json, os
+import json, os, asyncio
 
-def calculate_descriptors(smiles_list:list[str], **kwargs) -> pd.DataFrame:
+async def calculate_descriptors(smiles_list:list[str], **kwargs) -> pd.DataFrame:
     '使用传入的str计算描述符 (kwargs是为了和其他方法兼容)'
     # 拆分smiles
     smiles_series = pd.Series(smiles_list, name="smiles")
 
     # Core RDKit descriptors
-    rdkit_desc = get_rdkit_desc(smiles_series)
+    rdkit_desc = await asyncio.to_thread(get_rdkit_desc, smiles_series=smiles_series)
     return rdkit_desc
 
     # df_list = [
@@ -25,7 +25,7 @@ def calculate_descriptors(smiles_list:list[str], **kwargs) -> pd.DataFrame:
     # final_data_df = pd.concat(df_list, axis=1)
     # return final_data_df
 
-def _predict(final_data_df:pd.DataFrame, endpoints:list[str], device:str):
+async def _predict(final_data_df:pd.DataFrame, endpoints:list[str], device:str):
     '预测入口'
     # 载入config
     with open("config.json", "r") as f:
@@ -51,7 +51,7 @@ def _predict(final_data_df:pd.DataFrame, endpoints:list[str], device:str):
     # 预测
     for idx in range(len(estimator_list)):
         estimator = estimator_list[idx]
-        result_array[idx] = estimator.predict_auto(input_data)
+        result_array[idx] = await asyncio.to_thread(estimator.predict_auto, X=input_data)
     
     # 整理结果
     result_df = pd.DataFrame(result_array.T, columns=[i.date for i in estimator_list])
@@ -67,11 +67,11 @@ def _predict(final_data_df:pd.DataFrame, endpoints:list[str], device:str):
     )
     return result_df
 
-def hazard_identification(descriptors_data:dict, device:str):
+async def hazard_identification(descriptors_data:dict, device:str, **kwargs):
     '分类模型'
     final_data_df = pd.DataFrame(descriptors_data)
     # print(f"Input shape: {final_data_df.shape}")
-    result_df = _predict(
+    result_df = await _predict(
         final_data_df=final_data_df,
         endpoints=[
             'Hazard_viability',
@@ -100,7 +100,7 @@ def hazard_identification(descriptors_data:dict, device:str):
     )
     return result_df
 
-def regression_modeling(descriptors_data:dict, hi_result_dict:dict, device:str):
+async def regression_modeling(descriptors_data:dict, hi_result_dict:dict, device:str, hash:str, ic20=0.0005, **kwargs):
     '回归模型'
     final_data_df = pd.DataFrame(descriptors_data)
     hi_result = pd.DataFrame(hi_result_dict)
@@ -151,7 +151,7 @@ def regression_modeling(descriptors_data:dict, hi_result_dict:dict, device:str):
     if reg_data.shape[0] != 0:
         # 跑回归的部分直接合并信息中已有的smiles和原来的final_data_df, 并且把多余的column drop掉
         reg_input_data = pd.merge(final_data_df, reg_data, on="smiles").drop(columns=['reg_free_endpoints', 'reg_cell_endpoints'])
-        regression_result = _predict(
+        regression_result = await _predict(
             final_data_df=reg_input_data,
             endpoints=FREE_NAMES + CELL_NAMES,
             device=device,
@@ -180,9 +180,13 @@ def regression_modeling(descriptors_data:dict, hi_result_dict:dict, device:str):
 
     if opera_data.shape[0] != 0:
         # 跑opera的部分照常就行
-        opera_result = opera_predict(opera_data['smiles'].to_numpy())
-        ivd_result = calculate_ivd(opera_result, "mitotox")
-        ivd_result = ivd_result.rename(columns={'SMILES': 'smiles'})
+        opera_result = await opera_predict(opera_data['smiles'].to_numpy(), hash)
+        ivd_result = calculate_ivd(opera_result, "mitotox", ic20)
+        # ivd_result = ivd_result.rename(columns={'SMILES': 'smiles'})
+        ivd_result = pd.concat(
+            [opera_data['smiles'], ivd_result],
+            axis=1,
+        )
     else:
         ivd_result = pd.DataFrame()
 

@@ -333,9 +333,9 @@ class IVDCalculator():
         return pd.Series(out)
 
 
-def calculate_ivd(opera_result:pd.DataFrame, endpoint:str):
+def calculate_ivd(opera_result:pd.DataFrame, endpoint:str, ic20:float):
     df = opera_result
-    df['IC20'] = 0.0005
+    df['IC20'] = ic20
     ivd_calculator = IVDCalculator(endpoint=endpoint)
     corr = df.apply(ivd_calculator.compute_row, axis=1)
 

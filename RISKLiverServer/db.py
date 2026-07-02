@@ -1,27 +1,28 @@
 import tortoise
 from tortoise import Tortoise
 from . import get_config
-from urllib.parse import quote
+# from urllib.parse import quote
 from .db_models import *
 
 async def init_db():
     '初始化数据库'
-    user = quote(get_config()['PG']['User'])
-    passwd = quote(get_config()['PG']['Passwd'])
-    db_host = quote(get_config()['PG']['Host'])
-    db_port = get_config()['PG']['Port']
-    database = quote(get_config()['PG']['Database'])
-    config_db = {
-            "connections": {
-                "riskliver_db": f"postgres://{user}:{passwd}@{db_host}:{db_port}/{database}"
-            },
-            "apps": {
-                "riskliver_app": {
-                    "models": ["RISKLiverServer.db_models"],
-                    "default_connection": "riskliver_db",
-                }
-            },
-        }
+    # user = quote(get_config()['PG']['User'])
+    # passwd = quote(get_config()['PG']['Passwd'])
+    # db_host = quote(get_config()['PG']['Host'])
+    # db_port = get_config()['PG']['Port']
+    # database = quote(get_config()['PG']['Database'])
+    # config_db = {
+    #         "connections": {
+    #             "riskliver_db": f"postgres://{user}:{passwd}@{db_host}:{db_port}/{database}"
+    #         },
+    #         "apps": {
+    #             "riskliver_app": {
+    #                 "models": ["RISKLiverServer.db_models"],
+    #                 "default_connection": "riskliver_db",
+    #             }
+    #         },
+    #     }
+    config_db = get_config()['DB']
     await Tortoise.init(config_db, _enable_global_fallback=True)
     await Tortoise.generate_schemas(safe=True)
     print("DB initialized.")

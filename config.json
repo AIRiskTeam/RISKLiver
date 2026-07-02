@@ -1,20 +1,22 @@
 {
-    "Host": "localhost",
+    "Host": "0.0.0.0",
     "Port": 6310,
-    "PG": {
-        "Host": "10.119.1.125",
-        "Port": 63154,
-        "User": "postgres",
-        "Passwd": "postgres",
-        "Database": "riskliver"
+    "DB": {
+        "connections": {
+            "riskliver_db": "postgres://postgres:postgres@10.119.1.125:63154/riskliver"
+        },
+        "apps": {
+            "riskliver_app": {
+                "models": [
+                    "RISKLiverServer.db_models"
+                ],
+                "default_connection": "riskliver_db"
+            }
+        }
     },
-    "GPUType": "nvidia",
-    "AllowDevices": [
-        "cuda:0",
-        "cuda:1"
-    ],
+    "DeviceType": ["nvidia", "cpu"],
     "tmpDir": "/dev/shm/riskliver",
-    "OPERAExecutable": "/usr/OPERA/application/run_OPERA.sh",
+    "OPERAExecutable": "/usr/OPERA/application/run_OPERA_P.sh",
     "MATLABRuntimeDir": "/usr/local/MATLAB/MATLAB_Runtime/v912",
     "ModelConfig": {
         "Hazard_viability": {

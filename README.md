@@ -1,5 +1,5 @@
-# RISKLiver-ML
-RISKLiver is a ML-based tool to predict hazard levels and potency for drug-induced liver injury(DILI).
+# $\mathrm{RISK}_\mathrm{Liver}$-ML
+$\mathrm{RISK}_\mathrm{Liver}$ is a ML-based tool to predict hazard levels and potency for drug-induced liver injury(DILI).  
 
 ## Structure
 - `Descriptors`: packaged for calculating descriptors for input SMILES
@@ -24,6 +24,13 @@ RISKLiver is a ML-based tool to predict hazard levels and potency for drug-induc
 Backends for prediction on streamlit platform.
 
 ## Prerequisites
+- You must have an [tortoise-orm supported database](https://tortoise.github.io/databases.html#db-url) running (e.g.: *PostgreSQL*)
+    1. Install the database
+        ```sh
+        sudo docker run -itd -e POSTGRES_PASSWORD=<password> -e POSTGRES_HOST_AUTH_METHOD=trust -v <dir-to-store-data>:/var/lib/postgresql/data -p <port-of-database>:5432 --restart unless-stopped postgres:latest
+        ```
+    1. Config database  
+        Modify `DB` part of `config.json` (detailed format see [tortoise setup](https://tortoise.github.io/setup.html) and [database config instructions](https://tortoise.github.io/databases.html))
 - Be sure docker with NVIDIA container toolkit is installed:
     1. Docker: 
         ```sh
@@ -65,8 +72,9 @@ Backends for prediction on streamlit platform.
     ```sh
     sudo docker build -t riskliver-server .
     ```
-1. Run the server
+1. Run the server  
+    In the root path of the repo, run:
     ```sh
-    sudo docker run -itd --runtime=nvidia --gpus -p 8003:6310 all riskliver-server 
+    sudo docker run -itd --runtime=nvidia --gpus -p 8003:6310 -v .:/riskliver all --name riskliver-server riskliver-server /root/bin/micromamba run -n riskliver --cwd /riskliver python riskliver_server.py
     ```
     `8003` can be changed to any port you like, just keep the same with the `port` keyword in `config.json` of the fore end.
